@@ -13,12 +13,13 @@ import kotlinx.coroutines.channels.receiveOrNull
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
 import model.NewWidget
+import org.koin.ktor.ext.inject
 import service.WidgetService
 import util.JsonMapper.defaultMapper
 
 @ExperimentalCoroutinesApi
-fun Route.widget(widgetService: WidgetService) {
-
+fun Route.widget() {
+    val widgetService: WidgetService by inject<WidgetService>()
     route("/widget") {
 
         get {
