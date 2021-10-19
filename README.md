@@ -1,4 +1,11 @@
 ![Build](https://github.com/raharrison/kotlin-ktor-exposed-starter/workflows/Build/badge.svg)
+### Modified:
+ - Adding Koin for DI
+ - Using JWT for authentication and authorization
+ - Dropping proprietary FlyAway tool
+ - Single Page Application support
+ 
+
 
 ## Starter project to create a simple RESTful web service in Kotlin
 
@@ -20,7 +27,6 @@ Companion article: <https://ryanharrison.co.uk/2018/04/14/kotlin-ktor-exposed-st
  - [Exposed](https://github.com/JetBrains/Exposed) - Kotlin SQL framework
  - [H2](https://github.com/h2database/h2database) - Embeddable database
  - [HikariCP](https://github.com/brettwooldridge/HikariCP) - High performance JDBC connection pooling
- - [Flyway](https://flywaydb.org/) - Database migrations
  - [JUnit 5](https://junit.org/junit5/), [AssertJ](http://joel-costigliola.github.io/assertj/) and [Rest Assured](http://rest-assured.io/) for testing
  
 The starter project creates a new in-memory H2 database with one table for `Widget` instances.
