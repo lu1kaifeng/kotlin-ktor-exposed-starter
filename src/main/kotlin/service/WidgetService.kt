@@ -2,10 +2,9 @@ package service
 
 import model.*
 import org.jetbrains.exposed.sql.*
-import service.DatabaseFactory.dbQuery
+import org.koin.ktor.ext.inject
 
-class WidgetService {
-
+class WidgetService(private val dbFactory: DatabaseFactory) {
     private val listeners = mutableMapOf<Int, suspend (Notification<Widget?>) -> Unit>()
 
     fun addChangeListener(id: Int, listener: suspend (Notification<Widget?>) -> Unit) {
@@ -20,11 +19,11 @@ class WidgetService {
         }
     }
 
-    suspend fun getAllWidgets(): List<Widget> = dbQuery {
+    suspend fun getAllWidgets(): List<Widget> = dbFactory.dbQuery {
         Widgets.selectAll().map { toWidget(it) }
     }
 
-    suspend fun getWidget(id: Int): Widget? = dbQuery {
+    suspend fun getWidget(id: Int): Widget? = dbFactory.dbQuery {
         Widgets.select {
             (Widgets.id eq id)
         }.mapNotNull { toWidget(it) }
@@ -36,7 +35,7 @@ class WidgetService {
         return if (id == null) {
             addWidget(widget)
         } else {
-            dbQuery {
+            dbFactory.dbQuery {
                 Widgets.update({ Widgets.id eq id }) {
                     it[name] = widget.name
                     it[quantity] = widget.quantity
@@ -51,7 +50,7 @@ class WidgetService {
 
     suspend fun addWidget(widget: NewWidget): Widget {
         var key = 0
-        dbQuery {
+        dbFactory.dbQuery {
             key = (Widgets.insert {
                 it[name] = widget.name
                 it[quantity] = widget.quantity
@@ -64,7 +63,7 @@ class WidgetService {
     }
 
     suspend fun deleteWidget(id: Int): Boolean {
-        return dbQuery {
+        return dbFactory.dbQuery {
             Widgets.deleteWhere { Widgets.id eq id } > 0
         }.also {
             if (it) onChange(ChangeType.DELETE, id)

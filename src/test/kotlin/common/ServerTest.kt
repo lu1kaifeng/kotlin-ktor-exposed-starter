@@ -1,6 +1,8 @@
 package common
 
+import com.typesafe.config.ConfigFactory
 import io.ktor.application.*
+import io.ktor.config.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.restassured.RestAssured
@@ -16,10 +18,11 @@ import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
+import org.koin.test.KoinTest
 import util.JsonMapper.defaultMapper
 import java.util.concurrent.TimeUnit
 
-open class ServerTest {
+open class ServerTest : KoinTest {
 
     protected fun RequestSpecification.When(): RequestSpecification {
         return this.`when`()
@@ -45,6 +48,13 @@ open class ServerTest {
         fun startServer() {
             if (!serverStarted) {
                 server = embeddedServer(Netty, 8081, module = Application::module)
+                (server.environment.config as MapApplicationConfig).apply {
+                    put("jwt.upload.dir", "uploads")
+                    put("jwt.secret" ,"secret")
+                    put("jwt.issuer","http://0.0.0.0:8080/")
+                    put("jwt.audience" ,"http://0.0.0.0:8080/hello")
+                    put("jwt.realm","Access to 'hello'")
+                }
                 server.start()
                 serverStarted = true
 
@@ -54,6 +64,7 @@ open class ServerTest {
             }
         }
     }
+
 
     @BeforeEach
     fun before() = runBlocking {

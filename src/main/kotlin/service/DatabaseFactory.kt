@@ -8,11 +8,11 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.slf4j.LoggerFactory
 import javax.sql.DataSource
 
-object DatabaseFactory {
+class DatabaseFactory() {
 
     private val log = LoggerFactory.getLogger(this::class.java)
 
-    fun connectAndMigrate() {
+    init {
         log.info("Initialising database")
         val pool = hikari()
         Database.connect(pool)

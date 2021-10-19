@@ -4,6 +4,7 @@ import common.ServerTest
 import io.ktor.client.*
 import io.ktor.client.features.websocket.*
 import io.ktor.http.cio.websocket.*
+import io.ktor.util.*
 import io.restassured.RestAssured.*
 import io.restassured.http.ContentType
 import kotlinx.coroutines.Dispatchers
@@ -15,14 +16,37 @@ import model.NewWidget
 import model.Widget
 import model.WidgetNotification
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.BeforeClass
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
 import util.JsonMapper.defaultMapper
+import io.restassured.RestAssured.given
+import org.junit.jupiter.api.BeforeAll
 
 class WidgetResourceTest: ServerTest() {
 
+    companion object{
+        var token : String? = null
+        @BeforeAll
+        @JvmStatic
+        fun login(){
+            val response =
+
+            defaultMapper.decodeFromString<Map<String,String>>(given()
+                .contentType(ContentType.JSON)
+                .body(User(1))
+                .post("/login")
+                .then()
+                .statusCode(200)
+                .extract().asString())
+            token = response["token"]
+
+        }
+    }
+
     @Test
     fun testCreateWidget() {
+        assertThat(token !== null)
         // when
         val newWidget = NewWidget(null, "widget1", 12)
         val created = addWidget(newWidget)
@@ -163,6 +187,7 @@ class WidgetResourceTest: ServerTest() {
 
     private fun addWidget(widget: NewWidget): Widget {
         return given()
+            .headers("Authorization", "Bearer $token")
                 .contentType(ContentType.JSON)
                 .bodyJson(widget)
                 .When()

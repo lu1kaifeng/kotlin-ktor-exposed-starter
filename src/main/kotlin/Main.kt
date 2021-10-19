@@ -4,6 +4,7 @@ import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.features.*
+import io.ktor.locations.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
 import io.ktor.server.engine.*
@@ -12,9 +13,11 @@ import io.ktor.websocket.*
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.ktor.ext.Koin
 import org.koin.logger.slf4jLogger
+import org.slf4j.event.Level
 import service.DatabaseFactory
 import service.WidgetService
 import util.JsonMapper
+import web.User
 import web.auth
 import web.index
 import web.widget
@@ -22,7 +25,10 @@ import web.widget
 @ExperimentalCoroutinesApi
 fun Application.module() {
     install(DefaultHeaders)
-    install(CallLogging)
+    install(Locations)
+    install(CallLogging){
+        level = Level.TRACE
+    }
     install(WebSockets)
 
     install(ContentNegotiation) {
@@ -38,8 +44,8 @@ fun Application.module() {
     val audience = environment.config.property("jwt.audience").getString()
     val myRealm = environment.config.property("jwt.realm").getString()
     install(Authentication) {
-        jwt("auth-jwt") {
-            realm = myRealm
+        jwt {
+            //realm = myRealm
             verifier(
                 JWT
                     .require(Algorithm.HMAC256(secret))
@@ -47,10 +53,17 @@ fun Application.module() {
                     .withIssuer(issuer)
                     .build()
             )
+            validate {credential ->
+                if (credential.payload.getClaim("username").asString() != "") {
+                    credential.payload.claims
+                    User(1)
+                } else {
+                    null
+                }
+            }
         }
     }
 
-    DatabaseFactory.connectAndMigrate()
 
     install(Routing) {
         index()

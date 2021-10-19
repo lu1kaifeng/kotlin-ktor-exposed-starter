@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.ir.backend.js.compile
 
-val ktorVersion = "1.6.0"
+val ktorVersion = "1.6.4"
 val exposedVersion = "0.32.1"
 val h2Version = "1.4.200"
 val hikariCpVersion = "4.0.3"
@@ -38,6 +38,8 @@ dependencies {
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
+    implementation("io.arrow-kt:arrow-core:1.0.0")
+    implementation("io.ktor:ktor-locations:$ktorVersion")
 
     testImplementation("org.assertj:assertj-core:$assertjVersion")
     testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")

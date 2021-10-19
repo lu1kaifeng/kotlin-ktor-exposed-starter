@@ -1,6 +1,8 @@
 package web
 
+import authorize
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.http.cio.websocket.*
 import io.ktor.request.*
@@ -20,6 +22,7 @@ import util.JsonMapper.defaultMapper
 @ExperimentalCoroutinesApi
 fun Route.widget() {
     val widgetService: WidgetService by inject<WidgetService>()
+
     route("/widget") {
 
         get {
@@ -33,10 +36,17 @@ fun Route.widget() {
             else call.respond(widget)
         }
 
-        post {
-            val widget = call.receive<NewWidget>()
-            call.respond(HttpStatusCode.Created, widgetService.addWidget(widget))
+        authenticate() {
+            authorize<User>(authorizer =  { call: ApplicationCall, principal: User ->
+                if(principal.sub != 1L) call.respond(HttpStatusCode.Forbidden)
+            }){
+                post {
+                    val widget = call.receive<NewWidget>()
+                    call.respond(HttpStatusCode.Created, widgetService.addWidget(widget))
+                }
+            }
         }
+
 
         put {
             val widget = call.receive<NewWidget>()

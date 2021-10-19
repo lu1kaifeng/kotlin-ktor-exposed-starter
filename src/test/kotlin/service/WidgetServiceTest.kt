@@ -9,10 +9,11 @@ import model.Widget
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Nested
 import org.junit.jupiter.api.Test
+import org.koin.test.inject
 
 class WidgetServiceTest: ServerTest() {
 
-    private val widgetService = WidgetService()
+    private val widgetService by inject<WidgetService>()
 
     @Test
     fun testAddWidget() = runBlocking {
