@@ -17,7 +17,8 @@ import java.io.File
 import java.io.FileNotFoundException
 import java.nio.file.Path
 import java.nio.file.Paths
-
+fun String.notContains(regex: Regex) = !contains(regex)
+fun File.notExists() = !exists()
 /**
  * The SPA configuration class.
  * @param configuration The object configured by the install lambda.

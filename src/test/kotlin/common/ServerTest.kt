@@ -31,7 +31,7 @@ import service.DatabaseFactory
 import util.JsonMapper.defaultMapper
 import java.util.concurrent.TimeUnit
 
-open class ServerTest : KoinTest {
+open class ServerTest {
 
     protected fun RequestSpecification.When(): RequestSpecification {
         return this.`when`()

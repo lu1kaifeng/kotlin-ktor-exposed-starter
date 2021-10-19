@@ -1,14 +1,14 @@
 import org.jetbrains.kotlin.ir.backend.js.compile
 
 val ktorVersion = "1.6.4"
-val exposedVersion = "0.32.1"
+val exposedVersion = "0.35.1"
 val h2Version = "1.4.200"
-val hikariCpVersion = "4.0.3"
+val hikariCpVersion = "5.0.0"
 val flywayVersion = "7.10.0"
-val logbackVersion = "1.2.3"
-val assertjVersion = "3.19.0"
+val logbackVersion = "1.2.6"
+val assertjVersion = "3.21.0"
 val restAssuredVersion = "4.4.0"
-val junitVersion = "5.7.1"
+val junitVersion = "5.8.1"
 val koinVersion = "3.1.2"
 
 plugins {
@@ -33,7 +33,6 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
     implementation("com.zaxxer:HikariCP:$hikariCpVersion")
-    implementation("org.flywaydb:flyway-core:$flywayVersion")
     implementation("ch.qos.logback:logback-classic:$logbackVersion")
     implementation("io.insert-koin:koin-ktor:$koinVersion")
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
