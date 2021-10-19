@@ -6,18 +6,18 @@ import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 
 class SubjectService(private val dbFactory: DatabaseFactory) {
     suspend fun getAllSubjects(): List<Subject> = dbFactory.dbQuery {
-        Widgets.selectAll().map { toSubject(it) }
+        Subjects.selectAll().map { toSubject(it) }
     }
 
     suspend fun getSubject(id: Long): Subject? = dbFactory.dbQuery {
-        Widgets.select {
+        Subjects.select {
             (Subjects.id eq id)
         }.mapNotNull { toSubject(it) }
             .singleOrNull()
     }
 
     suspend fun getSubjectByNameAndPasswordOrNull(userName :String,password: String): User? = dbFactory.dbQuery {
-        Widgets.select {
+        Subjects.select {
             ((Subjects.username eq userName) and (Subjects.password eq password))
         }.mapNotNull { toSubject(it).toUser() }
             .singleOrNull()
@@ -36,7 +36,7 @@ class SubjectService(private val dbFactory: DatabaseFactory) {
 
     suspend fun deleteWidget(id: Long): Boolean {
         return dbFactory.dbQuery {
-            Widgets.deleteWhere { Subjects.id eq id } > 0
+            Subjects.deleteWhere { Subjects.id eq id } > 0
         }
     }
     private fun toSubject(row: ResultRow): Subject =

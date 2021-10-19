@@ -36,7 +36,7 @@ fun Application.module() {
     }
     install(Koin) {
         slf4jLogger()
-        modules(depModule)
+        modules(depModule(this@module))
     }
 
     val secret = environment.config.property("jwt.secret").getString()

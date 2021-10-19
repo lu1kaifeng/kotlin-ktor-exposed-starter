@@ -14,11 +14,11 @@ internal class AuthResourceTest: ServerTest() {
     @Test
     fun auth() {
         val response = given()
-            .contentType(ContentType.JSON)
-            .param("username","test")
-            .param("password","test")
+            .queryParam("username","test")
+            .queryParam("password","test")
             .post("/login")
             .then()
+            .statusCode(200)
             .extract()
             .to<Map<String,String>>()
 

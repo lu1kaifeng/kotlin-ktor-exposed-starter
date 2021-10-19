@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.Table
 object Subjects :Table(){
     val id = long("id").autoIncrement()
     val username = varchar("name", 255)
-    val password = varchar("name", 255)
+    val password = varchar("password", 255)
     override val primaryKey = PrimaryKey(id)
 }
 
