@@ -1,7 +1,7 @@
 import org.jetbrains.kotlin.ir.backend.js.compile
 
 val ktorVersion = "1.6.4"
-val exposedVersion = "0.35.1"
+val exposedVersion = "0.35.3"
 val h2Version = "1.4.200"
 val hikariCpVersion = "5.0.0"
 val flywayVersion = "7.10.0"
