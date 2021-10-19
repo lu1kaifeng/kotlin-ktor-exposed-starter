@@ -12,7 +12,7 @@ val junitVersion = "5.8.1"
 val koinVersion = "3.1.2"
 
 plugins {
-    kotlin("jvm") version "1.5.10"
+    kotlin("jvm") version "1.5.31"
     kotlin("plugin.serialization") version "1.5.10"
     application
 }
