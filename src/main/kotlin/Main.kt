@@ -4,6 +4,7 @@ import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.features.*
+import io.ktor.http.content.*
 import io.ktor.locations.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
@@ -16,10 +17,10 @@ import org.koin.logger.slf4jLogger
 import org.slf4j.event.Level
 import service.DatabaseFactory
 import service.WidgetService
+import spa.SinglePageApplication
 import util.JsonMapper
 import web.User
 import web.auth
-import web.index
 import web.widget
 
 @ExperimentalCoroutinesApi
@@ -66,11 +67,14 @@ fun Application.module() {
 
 
     install(Routing) {
-        index()
+
         widget()
         auth()
     }
-
+    install(SinglePageApplication){
+        defaultPage = "index.html"
+        folderPath = "static"
+    }
 }
 
 fun main(args: Array<String>) {

@@ -19,6 +19,7 @@ plugins {
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -40,6 +41,7 @@ dependencies {
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
     implementation("io.arrow-kt:arrow-core:1.0.0")
     implementation("io.ktor:ktor-locations:$ktorVersion")
+
 
     testImplementation("org.assertj:assertj-core:$assertjVersion")
     testImplementation("io.rest-assured:rest-assured:$restAssuredVersion")
