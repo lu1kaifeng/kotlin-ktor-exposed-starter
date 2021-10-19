@@ -1,24 +1,22 @@
 package spa
 
 import io.ktor.application.*
-import io.ktor.features.StatusPages
-import io.ktor.http.ContentType
-import io.ktor.http.HttpStatusCode
+import io.ktor.features.*
+import io.ktor.http.*
 import io.ktor.http.content.*
-import io.ktor.request.acceptItems
-import io.ktor.request.uri
-import io.ktor.response.ApplicationSendPipeline
-import io.ktor.response.respond
-import io.ktor.response.respondFile
-import io.ktor.routing.routing
-import io.ktor.util.AttributeKey
-import io.ktor.util.pipeline.PipelineContext
+import io.ktor.request.*
+import io.ktor.response.*
+import io.ktor.routing.*
+import io.ktor.util.*
+import io.ktor.util.pipeline.*
 import java.io.File
 import java.io.FileNotFoundException
 import java.nio.file.Path
 import java.nio.file.Paths
+
 fun String.notContains(regex: Regex) = !contains(regex)
 fun File.notExists() = !exists()
+
 /**
  * The SPA configuration class.
  * @param configuration The object configured by the install lambda.
@@ -74,7 +72,7 @@ class SinglePageApplication(private val configuration: Configuration) {
                     || requestUrl.startsWith("/${configuration.spaRoute}")))
         }
         val is404 by lazy {
-            when(message) {
+            when (message) {
                 is HttpStatusCode -> message == HttpStatusCode.NotFound
                 is HttpStatusCodeContent -> message.status == HttpStatusCode.NotFound
                 else -> false

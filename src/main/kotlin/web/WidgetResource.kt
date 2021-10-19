@@ -37,9 +37,9 @@ fun Route.widget() {
         }
 
         authenticate() {
-            authorize<User>(authorizer =  { call: ApplicationCall, principal: User ->
-                if(principal.sub != 1L) call.respond(HttpStatusCode.Forbidden)
-            }){
+            authorize<User>(authorizer = { call: ApplicationCall, principal: User ->
+                if (principal.sub != 1L) call.respond(HttpStatusCode.Forbidden)
+            }) {
                 post {
                     val widget = call.receive<NewWidget>()
                     call.respond(HttpStatusCode.Created, widgetService.addWidget(widget))

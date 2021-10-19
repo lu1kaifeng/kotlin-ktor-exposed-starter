@@ -7,22 +7,20 @@ import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.locations.*
 import io.ktor.locations.post
-import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.serialization.Serializable
 import org.koin.ktor.ext.inject
 import service.SubjectService
 import java.util.*
-import kotlin.math.log
 
 @Serializable
 data class User(
     val sub: Long
-) :Principal
+) : Principal
 
 @Location("/login")
-data class Login(val username : String,val password : String)
+data class Login(val username: String, val password: String)
 
 @KtorExperimentalLocationsAPI
 fun Route.auth() {
@@ -34,11 +32,11 @@ fun Route.auth() {
     val audience = application.environment.config.property("jwt.audience").getString()
     val myRealm = application.environment.config.property("jwt.realm").getString()
 
-    post<Login> {login->
+    post<Login> { login ->
         // val user = call.receive<User>()
         // Check username and password
         // ...
-        val subject = subjectService.getSubjectByNameAndPasswordOrNull(login.username,login.password)?:run {
+        val subject = subjectService.getSubjectByNameAndPasswordOrNull(login.username, login.password) ?: run {
             call.respond(HttpStatusCode.Forbidden)
             return@post
         }

@@ -67,7 +67,6 @@ fun Application.module() {
 
 
     install(Routing) {
-
         widget()
         auth()
     }

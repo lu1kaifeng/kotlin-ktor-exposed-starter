@@ -5,7 +5,6 @@ import com.zaxxer.hikari.HikariDataSource
 import io.ktor.application.*
 import model.Subjects
 import model.Widgets
-import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
@@ -34,20 +33,6 @@ class DatabaseFactory(private val app : Application) {
             validate()
         }
         return HikariDataSource(config)
-    }
-
-    private fun runFlyway(datasource: DataSource) {
-        val flyway = Flyway.configure()
-            .dataSource(datasource)
-            .load()
-        try {
-            flyway.info()
-            flyway.migrate()
-        } catch (e: Exception) {
-            log.error("Exception running flyway migration", e)
-            throw e
-        }
-        log.info("Flyway migration has finished")
     }
 
     suspend fun <T> dbQuery(
