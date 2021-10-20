@@ -33,9 +33,6 @@ fun Route.auth() {
     val myRealm = application.environment.config.property("jwt.realm").getString()
 
     post<Login> { login ->
-        // val user = call.receive<User>()
-        // Check username and password
-        // ...
         val subject = subjectService.getSubjectByNameAndPasswordOrNull(login.username, login.password) ?: run {
             call.respond(HttpStatusCode.Forbidden)
             return@post

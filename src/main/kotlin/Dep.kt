@@ -5,16 +5,17 @@ import service.DatabaseFactory
 import service.SubjectService
 import service.WidgetService
 
-val depModule : (app : Application)-> Module = {app->
+val depModule: (app: Application) -> Module = { app ->
     module {
-    single {
-        DatabaseFactory(app)
-
-    }
         single {
-            SubjectService(get () )
+            DatabaseFactory(app)
 
         }
-        single {  WidgetService(get()) }
+        single {
+            SubjectService(get())
 
-}}
+        }
+        single { WidgetService(get()) }
+
+    }
+}

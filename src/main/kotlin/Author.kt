@@ -11,7 +11,7 @@ inline fun <reified T : Principal> Route.authorize(crossinline authorizer : susp
     this.intercept(authorizePhase) {
         val principal : T? = this.call.principal()
         if(principal != null){
-            authorizer(call,principal!!)
+            authorizer(call, principal)
         }else{
             throw NotAuthenticatedException()
         }
