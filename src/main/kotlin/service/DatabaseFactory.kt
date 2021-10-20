@@ -8,6 +8,7 @@ import model.Widgets
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
 import javax.sql.DataSource
 
@@ -19,7 +20,9 @@ class DatabaseFactory(private val app : Application) {
         log.info("Initialising database")
         val pool = hikari()
         Database.connect(pool)
-        SchemaUtils.createMissingTablesAndColumns(Subjects,Widgets)
+         transaction{
+            SchemaUtils.createMissingTablesAndColumns(Subjects, Widgets)
+        }
     }
 
     private fun hikari(): HikariDataSource {

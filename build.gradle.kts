@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.ir.backend.js.compile
-
 val ktorVersion = "1.6.4"
 val exposedVersion = "0.35.1"
 val h2Version = "1.4.200"

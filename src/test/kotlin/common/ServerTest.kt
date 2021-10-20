@@ -25,17 +25,13 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
+import org.koin.ktor.ext.inject
 import org.koin.test.KoinTest
 import org.koin.test.inject
 import service.DatabaseFactory
 import util.JsonMapper.defaultMapper
 import java.util.concurrent.TimeUnit
-
-open class ServerTest {
-
-    protected fun RequestSpecification.When(): RequestSpecification {
-        return this.`when`()
-    }
+abstract class ServerTest {
 
     protected inline fun <reified T> ResponseBodyExtractionOptions.to(): T {
         return defaultMapper.decodeFromString(this.asString())
@@ -49,7 +45,8 @@ open class ServerTest {
 
         private var serverStarted = false
 
-        private lateinit var server: ApplicationEngine
+        @JvmStatic
+        protected lateinit var server: ApplicationEngine
 
         @ExperimentalCoroutinesApi
         @BeforeAll
@@ -79,7 +76,8 @@ open class ServerTest {
         }
     }
 
-
+    protected inline fun <reified T : Any> serverInject() =
+        server.application.inject<T>()
     @BeforeEach
     fun before() = runBlocking {
         val appConfig = server.application.environment.config
