@@ -7,9 +7,11 @@ import io.ktor.auth.*
 import io.ktor.http.*
 import io.ktor.locations.*
 import io.ktor.locations.post
+import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.serialization.Serializable
+import model.SubjectDto
 import org.koin.ktor.ext.inject
 import service.SubjectService
 import java.util.*
@@ -44,5 +46,14 @@ fun Route.auth() {
             .withExpiresAt(Date(System.currentTimeMillis() + 60000))
             .sign(Algorithm.HMAC256(secret))
         call.respond(hashMapOf("token" to token))
+    }
+
+    post("/register"){
+        val subject = call.receiveOrNull<SubjectDto>().apply {
+            if(this == null || this.password ==null){
+                call.respond(HttpStatusCode.BadRequest)
+        return@post
+            } }!!
+        call.respond(        subjectService.add(subject.toModel()).toDto())
     }
 }

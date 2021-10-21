@@ -8,6 +8,7 @@ import io.ktor.config.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import io.restassured.RestAssured
+import io.restassured.http.ContentType
 import io.restassured.response.ResponseBodyExtractionOptions
 import io.restassured.specification.RequestSpecification
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -38,6 +39,7 @@ abstract class ServerTest {
     }
 
     protected inline fun <reified T> RequestSpecification.bodyJson(obj: T): RequestSpecification {
+        this.contentType(ContentType.JSON)
         return this.body(defaultMapper.encodeToString(obj))
     }
 

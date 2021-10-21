@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test
 
 class SubjectServiceTest : ServerTest() {
     private val subjectService: SubjectService by serverInject()
-
     @Test
     fun testRegister(): Unit = runBlocking {
         val subject = Subject(null,"penis","penis").run {

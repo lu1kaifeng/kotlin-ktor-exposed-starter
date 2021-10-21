@@ -23,4 +23,9 @@ data class Subject(
 data class SubjectDto (
     val id : Long?,
     val username :String,
-)
+    val password: String?
+): Dto<Subject> {
+    constructor(id: Long?,username: String) :this(id,username,null)
+    constructor(username: String,password: String) :this(null,username,password)
+    override fun toModel() = password?.let { Subject(id,username, it) }?:throw NullPointerException()
+}

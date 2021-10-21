@@ -1,14 +1,11 @@
 package service
 
-import model.Model
-import model.Subject
-import model.SubjectDto
-import model.TableWithId
+import model.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.InsertStatement
 
-abstract class CrudService<T : TableWithId,DTO,M: Model<DTO>>(private val table: T,private val rowToModel : (ResultRow)->M,private val modelToInsertStmt:T.(InsertStatement<Number>,M) -> Unit,protected val dbFactory: DatabaseFactory) {
+abstract class CrudService<T : TableWithId,DTO: Dto<M>,M: Model<DTO>>(private val table: T, private val rowToModel : (ResultRow)->M, private val modelToInsertStmt:T.(InsertStatement<Number>, M) -> Unit, protected val dbFactory: DatabaseFactory) {
     suspend fun getAll(): List<M> = dbFactory.dbQuery {
         table.selectAll().map { rowToModel(it) }
     }
