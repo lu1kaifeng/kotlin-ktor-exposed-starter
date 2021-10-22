@@ -1,4 +1,4 @@
-package model
+package app.model
 
 import org.jetbrains.exposed.sql.Table
 

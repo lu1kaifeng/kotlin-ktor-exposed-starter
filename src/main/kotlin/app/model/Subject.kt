@@ -1,4 +1,4 @@
-package model
+package app.model
 
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Table

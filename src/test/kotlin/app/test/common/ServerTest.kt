@@ -14,8 +14,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
-import model.Subjects
-import module
+import app.model.Subjects
+import app.module
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.insert
@@ -23,7 +23,7 @@ import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransacti
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.koin.ktor.ext.inject
-import util.JsonMapper.defaultMapper
+import app.util.JsonMapper.defaultMapper
 import java.util.concurrent.TimeUnit
 abstract class ServerTest {
 

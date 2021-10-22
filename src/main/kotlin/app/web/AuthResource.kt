@@ -1,5 +1,7 @@
-package web
+package app.web
 
+import app.model.SubjectDto
+import app.service.SubjectService
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.application.*
@@ -11,9 +13,7 @@ import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import kotlinx.serialization.Serializable
-import model.SubjectDto
 import org.koin.ktor.ext.inject
-import service.SubjectService
 import java.util.*
 
 @Serializable

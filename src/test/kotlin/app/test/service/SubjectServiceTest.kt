@@ -2,9 +2,9 @@ package app.test.service
 
 import app.test.common.ServerTest
 import kotlinx.coroutines.runBlocking
-import model.Subject
+import app.model.Subject
 import org.junit.jupiter.api.Test
-import service.SubjectService
+import app.service.SubjectService
 
 class SubjectServiceTest : ServerTest() {
     private val subjectService: SubjectService by serverInject()

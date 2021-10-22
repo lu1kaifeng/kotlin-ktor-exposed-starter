@@ -2,7 +2,7 @@ package app.test.web
 
 import app.test.common.ServerTest
 import io.restassured.RestAssured.given
-import model.SubjectDto
+import app.model.SubjectDto
 import org.junit.jupiter.api.Test
 
 internal class AuthResourceTest: ServerTest() {

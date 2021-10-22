@@ -1,4 +1,4 @@
-package util
+package app.util
 
 import kotlinx.serialization.json.Json
 

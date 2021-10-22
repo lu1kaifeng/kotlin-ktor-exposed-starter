@@ -1,6 +1,9 @@
-package service
+package app.service
 
-import model.*
+import app.model.Subject
+import app.model.SubjectDto
+import app.model.Subjects
+
 import org.jetbrains.exposed.sql.*
 
 class SubjectService(dbFactory: DatabaseFactory) : CrudService<Subjects, SubjectDto, Subject>(Subjects, { row ->

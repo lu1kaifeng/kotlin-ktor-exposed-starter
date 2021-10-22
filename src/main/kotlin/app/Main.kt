@@ -1,10 +1,10 @@
+package app
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.auth.jwt.*
 import io.ktor.features.*
-import io.ktor.http.content.*
 import io.ktor.locations.*
 import io.ktor.routing.*
 import io.ktor.serialization.*
@@ -15,13 +15,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.ktor.ext.Koin
 import org.koin.logger.slf4jLogger
 import org.slf4j.event.Level
-import service.DatabaseFactory
-import service.WidgetService
-import spa.SinglePageApplication
-import util.JsonMapper
-import web.User
-import web.auth
-import web.widget
+import app.spa.SinglePageApplication
+import app.util.JsonMapper
+import app.web.User
+import app.web.auth
+import app.web.widget
 
 @ExperimentalCoroutinesApi
 fun Application.module() {

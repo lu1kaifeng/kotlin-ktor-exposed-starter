@@ -1,6 +1,6 @@
-package service
+package app.service
 
-import model.*
+import app.model.*
 import org.jetbrains.exposed.sql.*
 import org.koin.ktor.ext.inject
 

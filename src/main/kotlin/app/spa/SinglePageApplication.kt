@@ -1,4 +1,4 @@
-package spa
+package app.spa
 
 import io.ktor.application.*
 import io.ktor.features.*

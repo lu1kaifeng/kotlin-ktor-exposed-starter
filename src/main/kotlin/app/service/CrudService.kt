@@ -1,6 +1,8 @@
-package service
+package app.service
 
-import model.*
+import app.model.Dto
+import app.model.Model
+import app.model.TableWithId
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import org.jetbrains.exposed.sql.statements.InsertStatement

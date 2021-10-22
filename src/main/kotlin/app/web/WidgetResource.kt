@@ -1,6 +1,6 @@
-package web
+package app.web
 
-import authorize
+import app.authorize
 import io.ktor.application.*
 import io.ktor.auth.*
 import io.ktor.http.*
@@ -13,10 +13,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.encodeToString
-import model.NewWidget
+import app.model.NewWidget
 import org.koin.ktor.ext.inject
-import service.WidgetService
-import util.JsonMapper.defaultMapper
+import app.service.WidgetService
+import app.util.JsonMapper.defaultMapper
+import app.web.User
 
 @ExperimentalCoroutinesApi
 fun Route.widget() {
