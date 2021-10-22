@@ -1,6 +1,6 @@
-package web
+package app.test.web
 
-import common.ServerTest
+import app.test.common.ServerTest
 import io.restassured.RestAssured.get
 import io.restassured.http.ContentType
 import org.hamcrest.Matchers.blankOrNullString

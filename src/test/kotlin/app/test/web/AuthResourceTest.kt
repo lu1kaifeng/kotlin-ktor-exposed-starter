@@ -1,23 +1,17 @@
-package web
+package app.test.web
 
-import common.ServerTest
+import app.test.common.ServerTest
 import io.restassured.RestAssured.given
-import io.restassured.RestAssured.post
-import io.restassured.http.ContentType
-import kotlinx.serialization.encodeToString
 import model.SubjectDto
-import model.Widget
 import org.junit.jupiter.api.Test
-
-import org.junit.jupiter.api.Assertions.*import util.JsonMapper.defaultMapper
 
 internal class AuthResourceTest: ServerTest() {
 
     @Test
     fun testLogin() {
         given()
-            .queryParam("username","test")
-            .queryParam("password","test")
+            .queryParam("username","app/test")
+            .queryParam("password","app/test")
             .post("/login")
             .then()
             .statusCode(200)

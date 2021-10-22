@@ -3,6 +3,7 @@ package model
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Table
 
+
 object Widgets : Table() {
     val id = integer("id").autoIncrement()
     val name = varchar("name", 255)

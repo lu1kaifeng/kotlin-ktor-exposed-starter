@@ -1,6 +1,5 @@
-package common
+package app.test.common
 
-import com.typesafe.config.ConfigFactory
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.application.*
@@ -16,20 +15,14 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import model.Subjects
-import model.Widgets
 import module
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
-import org.jetbrains.exposed.sql.deleteAll
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
-import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeAll
 import org.junit.jupiter.api.BeforeEach
 import org.koin.ktor.ext.inject
-import org.koin.test.KoinTest
-import org.koin.test.inject
-import service.DatabaseFactory
 import util.JsonMapper.defaultMapper
 import java.util.concurrent.TimeUnit
 abstract class ServerTest {
@@ -95,8 +88,8 @@ abstract class ServerTest {
         newSuspendedTransaction {
             SchemaUtils.create(Subjects)
             Subjects.insert {
-                it[username] = "test"
-                it[password] = "test"
+                it[username] = "app/test"
+                it[password] = "app/test"
             }
             Unit
         }

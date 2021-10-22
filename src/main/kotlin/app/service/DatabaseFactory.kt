@@ -23,6 +23,13 @@ class DatabaseFactory(private val app : Application) {
          transaction{
             SchemaUtils.createMissingTablesAndColumns(Subjects, Widgets)
         }
+        findAllClass("")
+    }
+
+    private fun findAllClass(packageName :String){
+        val stream = app.environment.classLoader
+            .definedPackages
+        return
     }
 
     private fun hikari(): HikariDataSource {
