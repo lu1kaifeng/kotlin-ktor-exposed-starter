@@ -10,6 +10,6 @@
     </root>
 
     <logger name="Exposed" level="DEBUG" />
-    <logger name="ktor.application" level="TRACE" />
+    <logger name="ktor.application" level="DEBUG" />
 
 </configuration>
