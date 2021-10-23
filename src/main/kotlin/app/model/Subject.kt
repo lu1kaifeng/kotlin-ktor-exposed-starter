@@ -1,11 +1,14 @@
 package app.model
 
+import app.orm.Dto
+import app.orm.Model
+import app.orm.TableWithId
 import kotlinx.serialization.Serializable
 import org.jetbrains.exposed.sql.Table
 
 
 
-object Subjects :TableWithId(){
+object Subjects : TableWithId(){
     val username = varchar("name", 255)
     val password = varchar("password", 255)
 }
@@ -15,7 +18,7 @@ data class Subject(
     val id : Long?,
     val username :String,
     val password :String
-) : Model<SubjectDto>{
+) : Model<SubjectDto> {
     override fun toDto() = SubjectDto(id,username)
 }
 

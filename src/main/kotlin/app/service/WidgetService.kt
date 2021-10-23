@@ -2,9 +2,8 @@ package app.service
 
 import app.model.*
 import org.jetbrains.exposed.sql.*
-import org.koin.ktor.ext.inject
 
-class WidgetService(private val dbFactory: DatabaseFactory) {
+class WidgetService(private val dbFactory: DatabaseProvider) {
     private val listeners = mutableMapOf<Int, suspend (Notification<Widget?>) -> Unit>()
 
     fun addChangeListener(id: Int, listener: suspend (Notification<Widget?>) -> Unit) {

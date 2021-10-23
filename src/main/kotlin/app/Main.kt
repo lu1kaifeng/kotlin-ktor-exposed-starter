@@ -1,4 +1,5 @@
 package app
+import app.orm.TableWithId
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.application.*
@@ -20,9 +21,13 @@ import app.util.JsonMapper
 import app.web.User
 import app.web.auth
 import app.web.widget
+import org.jetbrains.exposed.sql.Table
+import org.reflections.Reflections
 
 @ExperimentalCoroutinesApi
 fun Application.module() {
+    val reflections = Reflections(this.environment.classLoader.name)
+
     install(DefaultHeaders)
     install(Locations)
     install(CallLogging){

@@ -1,12 +1,14 @@
 package app.service
 
+import app.model.DatabaseProvider
 import app.model.Subject
 import app.model.SubjectDto
 import app.model.Subjects
+import app.orm.CrudService
 
 import org.jetbrains.exposed.sql.*
 
-class SubjectService(dbFactory: DatabaseFactory) : CrudService<Subjects, SubjectDto, Subject>(Subjects, { row ->
+class SubjectService(dbFactory: DatabaseProvider) : CrudService<Subjects, SubjectDto, Subject>(Subjects, { row ->
     Subject(
         id = row[Subjects.id],
         username = row[Subjects.username],
