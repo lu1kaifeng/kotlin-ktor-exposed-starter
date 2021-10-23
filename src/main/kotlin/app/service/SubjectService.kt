@@ -19,7 +19,7 @@ class SubjectService(dbFactory: DatabaseProvider) : CrudService<Subjects, Subjec
     it[password] = user.password
 }, dbFactory) {
 
-    suspend fun getSubjectByNameAndPasswordOrNull(userName: String, password: String): SubjectDto? = dbFactory.dbQuery {
+    suspend fun getSubjectByNameAndPasswordOrNull(userName: String, password: String): SubjectDto? = dbProvider.invoke {
         Subjects.select {
             ((Subjects.username eq userName) and (Subjects.password eq password))
         }.mapNotNull { toSubject(it).toDto() }

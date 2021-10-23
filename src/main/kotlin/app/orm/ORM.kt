@@ -25,7 +25,7 @@ abstract class TableWithId : Table() {
 
 @Retention(AnnotationRetention.RUNTIME)
 @Target(AnnotationTarget.CLASS)
-annotation class Ignore()
+annotation class Ignore
 
 abstract class AbstractDatabaseProvider(dataSource: DataSource) {
 
@@ -49,11 +49,11 @@ abstract class AbstractDatabaseProvider(dataSource: DataSource) {
             SchemaUtils.createMissingTablesAndColumns(*tables.toTypedArray())
         }
     }
-
-    suspend fun <T> dbQuery(
-        block: suspend () -> T
+    suspend operator fun <T> invoke(
+        block: suspend Transaction.() -> T
     ): T =
         newSuspendedTransaction { block() }
+
 
 }
 
@@ -61,13 +61,14 @@ abstract class CrudService<T : TableWithId, DTO : Dto<M>, M : Model<DTO>>(
     private val table: T,
     private val rowToModel: (ResultRow) -> M,
     private val modelToInsertStmt: T.(InsertStatement<Number>, M) -> Unit,
-    protected val dbFactory: DatabaseProvider
+    protected val dbProvider: DatabaseProvider
 ) {
-    suspend fun getAll(): List<M> = dbFactory.dbQuery {
+
+    suspend fun getAll(): List<M> = dbProvider{
         table.selectAll().map { rowToModel(it) }
     }
 
-    suspend fun getById(id: Long): M? = dbFactory.dbQuery {
+    suspend fun getById(id: Long): M? = dbProvider{
         table.select {
             (table.id eq id)
         }.mapNotNull { rowToModel(it) }
@@ -76,14 +77,14 @@ abstract class CrudService<T : TableWithId, DTO : Dto<M>, M : Model<DTO>>(
 
     suspend fun add(model: M): M {
         var key = 0L
-        dbFactory.dbQuery {
+        dbProvider{
             key = (table.insert { table.modelToInsertStmt(it, model) } get table.id)
         }
         return getById(key)!!
     }
 
     suspend fun delete(id: Long): Boolean {
-        return dbFactory.dbQuery {
+        return dbProvider{
             table.deleteWhere { table.id eq id } > 0
         }
     }

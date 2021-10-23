@@ -18,11 +18,11 @@ class WidgetService(private val dbFactory: DatabaseProvider) {
         }
     }
 
-    suspend fun getAllWidgets(): List<Widget> = dbFactory.dbQuery {
+    suspend fun getAllWidgets(): List<Widget> = dbFactory.invoke {
         Widgets.selectAll().map { toWidget(it) }
     }
 
-    suspend fun getWidget(id: Int): Widget? = dbFactory.dbQuery {
+    suspend fun getWidget(id: Int): Widget? = dbFactory.invoke {
         Widgets.select {
             (Widgets.id eq id)
         }.mapNotNull { toWidget(it) }
@@ -34,7 +34,7 @@ class WidgetService(private val dbFactory: DatabaseProvider) {
         return if (id == null) {
             addWidget(widget)
         } else {
-            dbFactory.dbQuery {
+            dbFactory.invoke {
                 Widgets.update({ Widgets.id eq id }) {
                     it[name] = widget.name
                     it[quantity] = widget.quantity
@@ -49,7 +49,7 @@ class WidgetService(private val dbFactory: DatabaseProvider) {
 
     suspend fun addWidget(widget: NewWidget): Widget {
         var key = 0
-        dbFactory.dbQuery {
+        dbFactory.invoke {
             key = (Widgets.insert {
                 it[name] = widget.name
                 it[quantity] = widget.quantity
@@ -62,7 +62,7 @@ class WidgetService(private val dbFactory: DatabaseProvider) {
     }
 
     suspend fun deleteWidget(id: Int): Boolean {
-        return dbFactory.dbQuery {
+        return dbFactory.invoke {
             Widgets.deleteWhere { Widgets.id eq id } > 0
         }.also {
             if (it) onChange(ChangeType.DELETE, id)
