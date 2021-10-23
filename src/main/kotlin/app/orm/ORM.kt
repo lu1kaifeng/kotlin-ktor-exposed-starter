@@ -1,31 +1,24 @@
 package app.orm
 
 import app.model.DatabaseProvider
-import app.model.Subjects
-import app.model.Widgets
-import com.zaxxer.hikari.HikariConfig
-import com.zaxxer.hikari.HikariDataSource
-import io.ktor.application.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.statements.InsertStatement
 import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.reflections.Reflections
 import org.slf4j.LoggerFactory
-import java.util.stream.Collector
-import java.util.stream.Collectors
 import javax.sql.DataSource
 import kotlin.reflect.full.findAnnotation
 
-interface Model<DTO>{
-    fun toDto() :DTO
+interface Model<DTO> {
+    fun toDto(): DTO
 }
 
-interface Dto<Model>{
-    fun toModel() : Model
+interface Dto<Model> {
+    fun toModel(): Model
 }
 
-abstract class TableWithId : Table(){
+abstract class TableWithId : Table() {
     val id = long("id").autoIncrement()
     override val primaryKey = PrimaryKey(id)
 }
@@ -41,16 +34,18 @@ abstract class AbstractDatabaseProvider(dataSource: DataSource) {
     init {
         log.info("Initialising database")
         Database.connect(dataSource)
-        val tables : List<TableWithId> = Reflections(this.javaClass.packageName).getSubTypesOf(TableWithId::class.java).stream().toList().mapNotNull {
-            if(it.kotlin.findAnnotation<Ignore>() == null){
-                log.info("Detecting table : ${it.name}")
-                it.kotlin.objectInstance
-            }else{
-                log.info("Detecting and Ignoring table : ${it.name}")
-                null
-            }
-        }
-        transaction{
+        val tables: List<TableWithId> =
+            Reflections(this.javaClass.packageName).getSubTypesOf(TableWithId::class.java).stream().toList()
+                .mapNotNull {
+                    if (it.kotlin.findAnnotation<Ignore>() == null) {
+                        log.info("Detecting table : ${it.name}")
+                        it.kotlin.objectInstance
+                    } else {
+                        log.info("Detecting and Ignoring table : ${it.name}")
+                        null
+                    }
+                }
+        transaction {
             SchemaUtils.createMissingTablesAndColumns(*tables.toTypedArray())
         }
     }
@@ -62,7 +57,12 @@ abstract class AbstractDatabaseProvider(dataSource: DataSource) {
 
 }
 
-abstract class CrudService<T : TableWithId,DTO: Dto<M>,M: Model<DTO>>(private val table: T, private val rowToModel : (ResultRow)->M, private val modelToInsertStmt:T.(InsertStatement<Number>, M) -> Unit, protected val dbFactory: DatabaseProvider) {
+abstract class CrudService<T : TableWithId, DTO : Dto<M>, M : Model<DTO>>(
+    private val table: T,
+    private val rowToModel: (ResultRow) -> M,
+    private val modelToInsertStmt: T.(InsertStatement<Number>, M) -> Unit,
+    protected val dbFactory: DatabaseProvider
+) {
     suspend fun getAll(): List<M> = dbFactory.dbQuery {
         table.selectAll().map { rowToModel(it) }
     }
@@ -74,10 +74,10 @@ abstract class CrudService<T : TableWithId,DTO: Dto<M>,M: Model<DTO>>(private va
             .singleOrNull()
     }
 
-    suspend fun add(model : M): M {
+    suspend fun add(model: M): M {
         var key = 0L
         dbFactory.dbQuery {
-            key = (table.insert { table.modelToInsertStmt(it,model) } get table.id)
+            key = (table.insert { table.modelToInsertStmt(it, model) } get table.id)
         }
         return getById(key)!!
     }

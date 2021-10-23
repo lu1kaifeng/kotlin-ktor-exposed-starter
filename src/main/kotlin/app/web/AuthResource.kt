@@ -48,12 +48,13 @@ fun Route.auth() {
         call.respond(hashMapOf("token" to token))
     }
 
-    post("/register"){
+    post("/register") {
         val subject = call.receiveOrNull<SubjectDto>().apply {
-            if(this == null || this.password ==null){
+            if (this == null || this.password == null) {
                 call.respond(HttpStatusCode.BadRequest)
-        return@post
-            } }!!
-        call.respond(        subjectService.add(subject.toModel()).toDto())
+                return@post
+            }
+        }!!
+        call.respond(subjectService.add(subject.toModel()).toDto())
     }
 }
