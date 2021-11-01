@@ -36,7 +36,7 @@ dependencies {
     implementation("io.insert-koin:koin-logger-slf4j:$koinVersion")
     implementation("io.ktor:ktor-auth:$ktorVersion")
     implementation("io.ktor:ktor-auth-jwt:$ktorVersion")
-    implementation("io.arrow-kt:arrow-core:1.0.0")
+    implementation("io.arrow-kt:arrow-core:1.0.1")
     implementation("io.ktor:ktor-locations:$ktorVersion")
     implementation("org.reflections:reflections:0.10.1")
 
